@@ -6,17 +6,21 @@ export class GameScene extends Phaser.Scene {
   player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   obstacle!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
-  waterLayer!: Tilemaps.StaticTilemapLayer;
   groundLayer!: Tilemaps.StaticTilemapLayer;
   obstacleLayer!: Tilemaps.StaticTilemapLayer;
+  decorationLayer!: Tilemaps.StaticTilemapLayer;
   toiLayer!: Tilemaps.StaticTilemapLayer;
+  water!: Phaser.GameObjects.TileSprite;
+  waterFrame: number = 0;
 
   gameItems!: Phaser.GameObjects.Group;
   moveTarget!: Phaser.GameObjects.Sprite;
 
   ludumDareMonoliths!: Phaser.GameObjects.Group;
 
-  playerSpeed = 50;
+  playerSpeed = 100;
+  zoomLevel = 2;
+  tileSize = 16;
 
   constructor() {
     super({ active: false, visible: false });
@@ -31,6 +35,7 @@ export class GameScene extends Phaser.Scene {
       frameHeight: 32,
       endFrame: 3,
     });
+
     this.load.spritesheet("spell", "assets/images/spell.png", {
       frameWidth: 11,
       frameHeight: 12,
@@ -38,6 +43,8 @@ export class GameScene extends Phaser.Scene {
     this.load.image("sign", "assets/images/sign.png");
     this.load.image("box", "assets/images/box.png");
     this.load.image("box2", "assets/images/box2.png");
+
+    this.load.spritesheet("water", "assets/water.png", { frameWidth: this.tileSize, frameHeight: this.tileSize });
 
     this.load.image("tiles", "assets/tilemap_packed_extruded.png");
     this.load.tilemapTiledJSON("tilemap", "assets/map.json");
@@ -52,16 +59,12 @@ export class GameScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.player = this.physics.add
       .sprite(100, 100, "goblin-knight")
-      .setCollideWorldBounds(true)
       .setDepth(1)
       .setName("Player")
-      .play("idle");
+      .play("idle")
+      .setScale(this.zoomLevel, this.zoomLevel);
 
     this.player.body.setSize(8, 12, true);
-
-    // this.obstacle = this.physics.add
-    //   .sprite(200, 200, "box2")
-    //   .setCollideWorldBounds(true);
 
     this.moveTarget = this.add.sprite(10, 10, "spell").setDepth(1);
     this.moveTarget.play("spellwobble");
@@ -71,25 +74,43 @@ export class GameScene extends Phaser.Scene {
     const ludumDareMonolithLocations: Phaser.Math.Vector2[] = [];
 
     const map = this.add.tilemap("tilemap");
-    map.addTilesetImage("tiles", "tiles", 16, 16, 1, 2);
-    this.waterLayer = map.createStaticLayer("Water", "tiles");
+    map.addTilesetImage("tiles", "tiles", this.tileSize, this.tileSize, 1, 2);
+
+    this.water = this.add.tileSprite(
+      0,
+      0,
+      map.width * this.tileSize * this.zoomLevel,
+      map.height * this.tileSize * this.zoomLevel,
+      "water"
+    );
+    this.water.setScale(this.zoomLevel, this.zoomLevel);
+
     this.groundLayer = map.createStaticLayer("Ground", "tiles");
+    this.groundLayer.setScale(this.zoomLevel, this.zoomLevel);
 
     this.obstacleLayer = map.createStaticLayer("Obstacles", "tiles");
     this.obstacleLayer.setCollision(197, true);
     this.obstacleLayer.setVisible(false);
+    this.obstacleLayer.setScale(this.zoomLevel, this.zoomLevel);
+
+    this.decorationLayer = map.createStaticLayer("Decoration", "tiles");
+    this.decorationLayer.setVisible(true);
+    this.decorationLayer.setScale(this.zoomLevel, this.zoomLevel);
 
     this.toiLayer = map.createStaticLayer("TilesOfInterest", "tiles");
+    this.toiLayer.setScale(this.zoomLevel, this.zoomLevel);
     this.toiLayer.forEachTile((tile: Phaser.Tilemaps.Tile) => {
       if (tile.index != -1) {
         if (tile.index === 80) {
           console.log("Monolith at: ", tile.x, tile.y);
-          ludumDareMonolithLocations.push(new Phaser.Math.Vector2(tile.x * tile.width, tile.y * tile.height));
+          ludumDareMonolithLocations.push(
+            new Phaser.Math.Vector2(tile.x * tile.width * this.zoomLevel, tile.y * tile.height * this.zoomLevel)
+          );
           tile.index = -1;
         } else if (tile.index === 86) {
           console.log("Player at: ", tile.x, tile.y);
-          this.player.x = tile.x * tile.width;
-          this.player.y = tile.y * tile.height;
+          this.player.x = tile.x * tile.width * this.zoomLevel;
+          this.player.y = tile.y * tile.height * this.zoomLevel;
           tile.index = -1;
         }
       }
@@ -100,23 +121,21 @@ export class GameScene extends Phaser.Scene {
     LudumDareGames.forEach((item) => {
       const gameItem = this.physics.add
         .staticSprite(
-          ludumDareMonolithLocations[monolithIndex].x + 8,
-          ludumDareMonolithLocations[monolithIndex].y + 8,
+          ludumDareMonolithLocations[monolithIndex].x + 8 * this.zoomLevel,
+          ludumDareMonolithLocations[monolithIndex].y + 8 * this.zoomLevel,
           "sign"
         )
         .setName(item.name)
-        .setData(item);
-      // .setCollideWorldBounds(true);
+        .setData(item)
+        .setScale(this.zoomLevel, this.zoomLevel);
 
-      // console.log(gameItem);
       monolithIndex++;
       this.gameItems.add(gameItem);
     });
 
+    this.cameras.main.startFollow(this.player, true, 1, 1);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.setRoundPixels(true);
-    this.cameras.main.startFollow(this.player, false, 0.1, 0.1);
-    this.cameras.main.setZoom(2);
 
     this.input.on(
       "pointerdown",
@@ -125,8 +144,8 @@ export class GameScene extends Phaser.Scene {
         console.log("Scroll: ", this.cameras.main.scrollX, this.cameras.main.scrollY);
 
         this.moveTarget.setPosition(
-          pointer.position.x / this.cameras.main.zoom,
-          pointer.position.y / this.cameras.main.zoom
+          pointer.position.x / this.cameras.main.zoom + this.cameras.main.scrollX,
+          pointer.position.y / this.cameras.main.zoom + this.cameras.main.scrollY
         );
         this.moveTarget.setActive(true);
         this.moveTarget.setVisible(true);
@@ -136,13 +155,14 @@ export class GameScene extends Phaser.Scene {
       },
       this
     );
-
-    // this.scale.refresh();
   }
 
-  update() {
+  update(time: number, delta: number) {
     this.player.setVelocity(0, 0);
-    // this.obstacle.setVelocity(0, 0);
+
+    this.waterFrame += delta / 100;
+    this.waterFrame = Phaser.Math.Wrap(this.waterFrame, 0, 14);
+    this.water.setFrame(Math.round(this.waterFrame));
 
     if (this.cursors.left!.isDown) {
       this.player.setFlipX(false);
@@ -191,6 +211,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.world.collide(this.player, this.obstacle);
     this.physics.world.collide(this.player, this.gameItems, this.showData);
     this.physics.world.collide(this.player, this.obstacleLayer);
+    this.physics.world.overlap(this.player, this.decorationLayer);
 
     this.gameItems.getChildren().forEach((item) => {
       if (item.state == "show") {
@@ -198,6 +219,7 @@ export class GameScene extends Phaser.Scene {
         const text = this.add.text(item.body.position.x, item.body.position.y, item.name);
         text.x = text.x - text.width / 2;
         text.y = text.y - text.height;
+        text.setDepth(10);
         const tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig = {
           targets: text,
           props: {
@@ -250,8 +272,15 @@ export class GameScene extends Phaser.Scene {
       repeat: -1,
     };
 
+    const waterConfig: Phaser.Types.Animations.Animation = {
+      key: "water",
+      frames: this.anims.generateFrameNames("water"),
+      repeat: -1,
+    };
+
     this.anims.create(spellConfig);
     this.anims.create(walkConfig);
     this.anims.create(idleConfig);
+    this.anims.create(waterConfig);
   }
 }
