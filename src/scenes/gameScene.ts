@@ -264,8 +264,9 @@ export class GameScene extends Phaser.Scene {
     const idleConfig: Phaser.Types.Animations.Animation = {
       key: "idle",
       frames: this.anims.generateFrameNames("goblin-knight", {
-        start: 1,
-        end: 2,
+        // start: 1,
+        // end: 2,
+        frames: [1, 1, 1, 1, 2],
       }),
       yoyo: true,
       frameRate: 1,
