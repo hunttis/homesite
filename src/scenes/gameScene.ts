@@ -2,6 +2,7 @@ import { Tilemaps } from "phaser";
 import { GameItem, LudumDareGames } from "../data/Data";
 import * as ES from "easystarjs";
 import * as Loader from "./game/loader";
+import "easystarjs";
 
 const EasyStar: new () => ES.js = (ES as any).default.js;
 
@@ -30,7 +31,6 @@ export class GameScene extends Phaser.Scene {
   ludumDareMonoliths!: Phaser.GameObjects.Group;
 
   playerSpeed = 100;
-  // zoomLevel = 1;
   tileSize = 32;
 
   constructor() {
