@@ -10,13 +10,14 @@
     "dev": "snowpack dev",
     "refresh": "node ./scripts/refresh-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "snowpack build"
+    "build": "snowpack build",
+    "reload": "snowpack build --reload"
   },
   "keywords": [
     "phase",
     "game"
   ],
-  "author": "Joni Katajamäki",
+  "author": "Ville Nuutinen",
   "license": "MIT",
   "devDependencies": {
     "phaser": "^3.24.1",

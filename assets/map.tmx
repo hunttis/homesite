@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="14">
  <editorsettings>
   <export target="map.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="207" columns="23">
-  <image source="tilemap_packed.png" width="368" height="144"/>
+ <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="207" columns="23">
+  <image source="tilemap_packed_2x.png" width="736" height="288"/>
   <terraintypes>
    <terrain name="Grass" tile="0"/>
    <terrain name="Sand" tile="0"/>
@@ -15,38 +15,38 @@
   <tile id="1" terrain="0,0,0,0"/>
   <tile id="2" terrain="1,1,1,1"/>
   <tile id="3" terrain="1,1,1,1"/>
-  <tile id="15" terrain=",,,0"/>
-  <tile id="16" terrain=",,0,"/>
-  <tile id="17" terrain="0,0,,"/>
-  <tile id="18" terrain=",,0,0"/>
-  <tile id="19" terrain=",,,1"/>
-  <tile id="20" terrain=",,1,"/>
-  <tile id="21" terrain="1,1,,"/>
-  <tile id="22" terrain=",,1,1"/>
-  <tile id="38" terrain=",0,,"/>
-  <tile id="39" terrain="0,,,"/>
-  <tile id="40" terrain=",0,,0"/>
-  <tile id="41" terrain="0,,0,"/>
-  <tile id="42" terrain=",1,,"/>
-  <tile id="43" terrain="1,,,"/>
-  <tile id="44" terrain=",1,,1"/>
-  <tile id="45" terrain="1,,1,"/>
-  <tile id="61" terrain="0,0,0,"/>
-  <tile id="62" terrain="0,0,,0"/>
-  <tile id="63" terrain="0,,0,0"/>
-  <tile id="64" terrain=",0,0,0"/>
-  <tile id="65" terrain="1,1,1,"/>
-  <tile id="66" terrain="1,1,,1"/>
-  <tile id="67" terrain="1,,1,1"/>
-  <tile id="68" terrain=",1,1,1"/>
-  <tile id="69" terrain="2,2,2,2"/>
-  <tile id="70" terrain="2,2,2,2"/>
-  <tile id="71" terrain="2,2,2,2"/>
-  <tile id="72" terrain="2,2,2,2"/>
-  <tile id="92" terrain="3,3,3,3"/>
-  <tile id="93" terrain="3,3,3,3"/>
-  <tile id="94" terrain="3,3,3,3"/>
-  <tile id="95" terrain="3,3,3,3"/>
+  <tile id="27" terrain=",,,0"/>
+  <tile id="28" terrain=",,0,"/>
+  <tile id="29" terrain="0,0,,"/>
+  <tile id="30" terrain=",,0,0"/>
+  <tile id="31" terrain=",,,1"/>
+  <tile id="32" terrain=",,1,"/>
+  <tile id="33" terrain="1,1,,"/>
+  <tile id="46" terrain=",,1,1"/>
+  <tile id="74" terrain=",0,,"/>
+  <tile id="75" terrain="0,,,"/>
+  <tile id="76" terrain=",0,,0"/>
+  <tile id="77" terrain="0,,0,"/>
+  <tile id="78" terrain=",1,,"/>
+  <tile id="79" terrain="1,,,"/>
+  <tile id="92" terrain=",1,,1"/>
+  <tile id="93" terrain="1,,1,"/>
+  <tile id="121" terrain="0,0,0,"/>
+  <tile id="122" terrain="0,0,,0"/>
+  <tile id="123" terrain="0,,0,0"/>
+  <tile id="124" terrain=",0,0,0"/>
+  <tile id="125" terrain="1,1,1,"/>
+  <tile id="138" terrain="1,1,,1"/>
+  <tile id="139" terrain="1,,1,1"/>
+  <tile id="140" terrain=",1,1,1"/>
+  <tile id="141" terrain="2,2,2,2"/>
+  <tile id="142" terrain="2,2,2,2"/>
+  <tile id="143" terrain="2,2,2,2"/>
+  <tile id="144" terrain="2,2,2,2"/>
+  <tile id="188" terrain="3,3,3,3"/>
+  <tile id="189" terrain="3,3,3,3"/>
+  <tile id="190" terrain="3,3,3,3"/>
+  <tile id="191" terrain="3,3,3,3"/>
  </tileset>
  <layer id="1" name="Ground" width="100" height="100">
   <data encoding="csv">
@@ -152,6 +152,25 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="Info">
+  <object id="1" gid="180" x="432.426" y="464.915" width="16" height="16">
+   <properties>
+    <property name="Description" value="House!"/>
+   </properties>
+  </object>
+  <object id="2" gid="80" x="111.681" y="143.638" width="16" height="16"/>
+  <object id="3" gid="80" x="144.66" y="128.213" width="16" height="16"/>
+  <object id="4" gid="80" x="177.106" y="127.681" width="16" height="16"/>
+  <object id="5" gid="80" x="206.894" y="144.17" width="16" height="16"/>
+  <object id="6" gid="80" x="93.5957" y="176.617" width="16" height="16"/>
+  <object id="7" gid="80" x="113.809" y="209.064" width="16" height="16"/>
+  <object id="8" gid="80" x="112.213" y="239.383" width="16" height="16"/>
+  <object id="9" gid="80" x="145.191" y="223.957" width="16" height="16"/>
+  <object id="10" gid="80" x="160.085" y="256.404" width="16" height="16"/>
+  <object id="11" gid="80" x="174.979" y="225.021" width="16" height="16"/>
+  <object id="12" gid="80" x="207.426" y="241.511" width="16" height="16"/>
+  <object id="13" gid="80" x="209.021" y="208" width="16" height="16"/>
+ </objectgroup>
  <layer id="5" name="Decoration" width="100" height="100">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

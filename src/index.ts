@@ -5,7 +5,7 @@ export function startGame() {
   const config: Phaser.Types.Core.GameConfig = {
     title: "Phaser game",
     render: {
-      pixelArt: true
+      pixelArt: true,
       // roundPixels: true
     },
     scale: {
